@@ -59,3 +59,9 @@ jobs:
         run: yamllint -c ./${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/.yamllint ./${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/roles/
         working-directory: ./ansible_collections/
 
+      - name: Run ansible-lint on roles
+        run: ansible-lint -c  ${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/.ansible-lint ${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/roles/
+        working-directory: ./ansible_collections/
+        env:
+          ANSIBLE_LIBRARY: "./${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/plugins/modules"
+          ANSIBLE_ROLES_PATH: "./${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/roles"
