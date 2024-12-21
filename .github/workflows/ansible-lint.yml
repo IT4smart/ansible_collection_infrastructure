@@ -6,16 +6,7 @@ env:
 name: Ansible Linting
 on:
   push:
-    paths:
-      - 'roles/**'
-      - 'playbooks/**'
-      - 'tests/**'
-      - '.github/workflows/ansible-lint.yml'
   pull_request:
-    paths:
-      - 'roles/**'
-      - 'playbooks/**'
-      - 'tests/**'
 
 concurrency:
   group: >-
