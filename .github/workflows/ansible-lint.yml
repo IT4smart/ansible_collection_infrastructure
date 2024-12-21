@@ -10,7 +10,7 @@ on:
       - 'roles/**'
       - 'playbooks/**'
       - 'tests/**'
-      - '.github/workflows/ansible-lint.yaml'
+      - '.github/workflows/ansible-lint.yml'
   pull_request:
     paths:
       - 'roles/**'
@@ -42,7 +42,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: ${{ matrix.python }}
 
       - name: Install Dependencies
         run: |
