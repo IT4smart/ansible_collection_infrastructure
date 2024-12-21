@@ -24,7 +24,6 @@ jobs:
           - '3.9'
           - '3.10'
           - '3.11'
-          - '3.12'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -41,7 +40,7 @@ jobs:
           if [ -f .devcontainer/files/requirements.txt ]; then pip install -r .devcontainer/files/requirements.txt; fi
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
-      - name: Install Checkmk collection
+      - name: Install it4smart infrastructure collection
         run: ansible-galaxy collection install ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
 
