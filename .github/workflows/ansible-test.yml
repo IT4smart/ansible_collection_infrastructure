@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.9.18'
 
       - name: Install Ansible
         run: |
@@ -35,7 +35,7 @@ jobs:
           done
 
       - name: Run ansible-lint
-        uses: ansible/ansible-lint@main
+        uses: ansible/ansible-lint@v6.22.2
         with:
-          args: "roles/*"
+          working_directory: "roles/"
           setup_python: "false"
