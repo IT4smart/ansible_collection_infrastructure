@@ -1,0 +1,15 @@
+vm_pve_vm_name: "{{ inventory_hostname_short }}"
+vm_pve_os_type: l26
+vm_pve_cores: 1
+vm_pve_sockets: 1
+vm_pve_vcpus: 1
+vm_pve_memory: 1024
+vm_pve_onboot: false
+vm_pve_scsihw: virtio-scsi-single
+vm_pve_ide: []
+vm_pve_net:
+  net0: 'virtio:bridge=server'
+vm_pve_node: "{{ groups['pve'] | shuffle | first }}"
+vm_pve_agent: true
+vm_pve_state: present
+vm_pve_full: false

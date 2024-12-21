@@ -1,0 +1,29 @@
+- name: Vm_pve | Set proxmox node
+  ansible.builtin.set_fact:
+    pve_node: "{{ vm_pve_node }}"
+
+- name: Vm_pve | configure VM
+  community.general.proxmox_kvm:
+    api_host: "{{ pve_host }}"
+    api_user: "{{ pve_api_user }}"
+    api_password: "{{ pve_api_password }}"
+    boot: "{{ vm_pve_boot | default(omit) }}"
+    name: "{{ vm_pve_vm_name }}"
+    cores: "{{ vm_pve_cores }}"
+    sockets: "{{ vm_pve_sockets }}"
+    vcpus: "{{ vm_pve_vcpus }}"
+    memory: "{{ vm_pve_memory }}"
+    onboot: "{{ vm_pve_onboot }}"
+    scsihw: "{{ vm_pve_scsihw }}"
+    scsi: "{{ vm_pve_scsi | default(omit) }}"
+    net: "{{ vm_pve_net }}"
+    node: "{{ pve_node | ansible.builtin.split('.') | first }}"
+    agent: "{{ vm_pve_agent }}"
+    ostype: "{{ vm_pve_os_type }}"
+    clone: "{{ vm_pve_template | default(omit) }}"
+    ciuser: "{{ vm_pve_ciuser | default(omit) }}"
+    cipassword: "{{ vm_pve_cipassword | default(omit) }}"
+    sshkeys: "{{ vm_pve_sshkeys | default(omit) }}"
+    state: "{{ vm_pve_state }}"
+    full: "{{ vm_pve_full }}"
+  delegate_to: localhost
