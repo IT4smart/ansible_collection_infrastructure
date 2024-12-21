@@ -1,0 +1,61 @@
+env:
+  NAMESPACE: it4smart
+  COLLECTION_NAME: infrastructure
+
+
+name: Ansible Linting
+on:
+  push:
+    paths:
+      - 'roles/**'
+      - 'playbooks/**'
+      - 'tests/**'
+      - '.github/workflows/ansible-lint.yaml'
+  pull_request:
+    paths:
+      - 'roles/**'
+      - 'playbooks/**'
+      - 'tests/**'
+
+concurrency:
+  group: >-
+    ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+          - '3.9'
+          - '3.10'
+          - '3.11'
+          - '3.12'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f .devcontainer/files/requirements.txt ]; then pip install -r .devcontainer/files/requirements.txt; fi
+        working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
+
+      - name: Install Checkmk collection
+        run: ansible-galaxy collection install ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
+
+
+      # Run the linting
+      - name: Run yamllint on roles
+        run: yamllint -c ./${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/.yamllint ./${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/roles/
+        working-directory: ./ansible_collections/
+
