@@ -16,5 +16,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Ansible
+        run: |
+          pip install -r .devcontainer/files/requirements.txt
+
+      - name: Install role requirements
+        run: |
+          for role in roles/*; do
+            if [ -f "$role/requirements.yml" ]; then
+              echo "Installing requirements for $role"
+              ansible-galaxy install -r "$role/requirements.yml"
+            fi
+          done
+
       - name: Run ansible-lint
-        uses: ansible/ansible-lint@v6.22.2
+        uses: ansible/ansible-lint@main
+        with:
+          args: "roles/*"
+          setup_python: "false"
