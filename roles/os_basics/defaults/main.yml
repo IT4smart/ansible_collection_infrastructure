@@ -1,0 +1,16 @@
+windows_remote_desktop_enabled: true
+
+windows_remote_desktop_firewall:
+  - name: Remote Desktop - Any
+    action: allow
+    description: Allow Remote Desktop From Any
+    direction: in
+    enable: true
+    force: true
+    localport: 3389
+    protocol: TCP
+    remoteip: any
+    state: present
+
+linux_default_users:
+  - packer

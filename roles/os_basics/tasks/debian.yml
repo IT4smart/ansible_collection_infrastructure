@@ -1,0 +1,30 @@
+- name: Disable IPv6
+  ansible.builtin.template:
+    src: 10-ipv6_conf.j2
+    dest: /etc/sysctl.d/10-ipv6.conf
+  become: true
+  register: _result_ipv6
+
+- name: Apply sysctl changes
+  ansible.builtin.command: sysctl -p
+  become: true
+  when: _result_ipv6.changed
+
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname_short }}"
+    use: systemd
+  become: true
+  register: _result_hostname
+
+- name: Reboot if required
+  ansible.builtin.reboot:
+  when: _result_hostname.changed
+
+- name: Delete default user
+  ansible.builtin.user:
+    name: "{{ item }}"
+    state: absent
+    remove: true
+  become: true
+  loop: "{{ linux_default_users }}"

@@ -1,0 +1,78 @@
+- name: Remove autologon
+  community.windows.win_auto_logon:
+    state: absent
+
+- name: Change the hostname to {{ inventory_hostname_short }}
+  ansible.windows.win_hostname:
+    name: "{{ inventory_hostname_short }}"
+  register: res
+
+- name: Reboot
+  ansible.windows.win_reboot:
+  when: res.reboot_required
+
+- name: Get network connection profile
+  ansible.windows.win_shell: Get-NetConnectionProfile | Select-Object NetworkCategory | ConvertTo-Json
+  register: _result_netprofile
+
+- name: Set fact network profile
+  ansible.builtin.set_fact:
+    windows_netprofile: "{{ _result_netprofile.stdout | from_json }}"
+
+- name: Debug
+  ansible.builtin.debug:
+    msg: "{{ windows_netprofile }}"
+
+- name: Set network connection profile to private
+  ansible.windows.win_shell: Get-NetConnectionProfile | Set-NetConnectionProfile -NetworkCategory Private
+  when: windows_netprofile.NetworkCategory | int != 2
+
+- name: Set the unicode language to English Great Britain, reboot if required
+  community.windows.win_region:
+    unicode_language: en-US
+  register: result
+
+- ansible.windows.win_reboot:
+  when: result.restart_required
+
+- name: features | Managing Remote Desktop Feature
+  win_feature:
+    name: Remote-Desktop-Services
+    state: present
+  register: _windows_remote_desktop_services_enabled
+  when: windows_remote_desktop_enabled
+
+- name: features | Managing Remote Desktop Feature
+  win_feature:
+    name: Remote-Desktop-Services
+    state: absent
+  register: _windows_remote_desktop_services_not_enabled
+  when: not windows_remote_desktop_enabled
+
+- name: firewall | Managing Remote Desktop Firewall Settings
+  community.windows.win_firewall_rule:
+    action: "{{ item['action'] }}"
+    description: "{{ item['description']|default(omit) }}"
+    direction: "{{ item['direction'] }}"
+    enable: "{{ item['enable']|default(omit) }}"
+    force: "{{ item['force']|default(omit) }}"
+    localip: "{{ item['localip']|default(omit) }}"
+    localport: "{{ item['localport'] }}"
+    name: "{{ item['name'] }}"
+    profiles: "{{ item['profile']|default(omit) }}"
+    protocol: "{{ item['protocol'] }}"
+    remoteip: "{{ item['remoteip']|default(omit) }}"
+    state: "{{ item['state'] }}"
+  with_items: "{{ windows_remote_desktop_firewall }}"
+
+- name: reboot | Rebooting Server
+  win_reboot:
+    reboot_timeout_sec: 3600
+    shutdown_timeout_sec: 3600
+  when: >
+        (_windows_remote_desktop_services_enabled is defined and
+          _windows_remote_desktop_services_enabled['restart_needed'] is defined and
+        _windows_remote_desktop_services_enabled['restart_needed']) or
+        (_windows_remote_desktop_services_not_enabled is defined and
+          _windows_remote_desktop_services_not_enabled['restart_needed'] is defined and
+        _windows_remote_desktop_services_not_enabled['restart_needed'])
