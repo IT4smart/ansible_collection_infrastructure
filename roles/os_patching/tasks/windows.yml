@@ -1,0 +1,9 @@
+- name: Install Updates
+  ansible.windows.win_updates:
+  register: win_reboot_required
+
+- name: Reboot {{ inventory_hostname }}
+  win_reboot:
+    reboot_timeout: 3600
+  when:
+    - win_reboot_required.reboot_required
