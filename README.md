@@ -6,3 +6,4 @@ Ansible Collection Infrastructure
 | ---- | ----------- |
 | vm_pve | DEPRECATED. Clone and configure a virtual machine on proxmox. |
 | os_basics | Default configuration |
+| os_patching | Patching of Windows, Debian systems |
