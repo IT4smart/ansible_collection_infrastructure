@@ -1,3 +1,7 @@
+- name: Search windows updates
+  ansible.builtin.include_tasks:
+    file: search_windows_updates.yml
+
 - name: Install Updates
   ansible.windows.win_updates:
   register: win_reboot_required

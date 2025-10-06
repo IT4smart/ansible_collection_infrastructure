@@ -1,0 +1,13 @@
+- name: Search windows updates
+  ansible.windows.win_updates:
+    category_names:
+      - CriticalUpdates
+      - SecurityUpdates
+      - UpdateRollups
+    state: searched
+    log_path: "C:\\Windows\\Temp\\WindowsUpdates_search_{{ now(utc=false, fmt='%Y-%m-%d_%H-%M-%S') }}.log"
+  register: _result_wu_search
+
+- name: Debug
+  ansible.builtin.debug:
+    var: _result_wu_search

@@ -1,0 +1,5 @@
+ansible-lint
+molecule
+molecule-proxmox
+requests
+-r requirements.txt

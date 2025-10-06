@@ -1,0 +1,23 @@
+---
+dependency:
+  enabled: true
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
+driver:
+  name: molecule-proxmox
+  options:
+    api_host: 10.1.0.6
+    api_user: molecule@pam
+    api_token_id: molecule
+    api_token_secret: 8b5ae3c2-de0b-4f91-adb6-09ac3c8ce5c7
+    node: deepi01-pve001
+    template_name: tmpl-windows-server-2022
+    template_vmid: 9004
+platforms:
+  - name: 9999-wsv001
+    ssh_user: packer
+    ssh_password: VMw@re123!
+
+
+    

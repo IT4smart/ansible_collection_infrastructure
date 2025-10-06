@@ -18,3 +18,4 @@ build_ignore:
   - ".devcontainer"
 dependencies:
   community.general: ">=10.0.1"
+  chocolatey.chocolatey: ">=1.5.0"

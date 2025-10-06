@@ -76,3 +76,8 @@
         (_windows_remote_desktop_services_not_enabled is defined and
           _windows_remote_desktop_services_not_enabled['restart_needed'] is defined and
         _windows_remote_desktop_services_not_enabled['restart_needed'])
+
+- name: Install VMWare Tools
+  chocolatey.chocolatey.win_chocolatey:
+    name: vmware-tools
+  when: ansible_facts.virtualization_type | lower == 'vmware'
