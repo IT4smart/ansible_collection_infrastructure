@@ -4,6 +4,11 @@
     cache_valid_time: 3600
   become: true
 
+- name: Remove useless packages from the cache
+  ansible.builtin.apt:
+    autoclean: yes
+  become: true
+
 - name: Install updates
   ansible.builtin.apt:
     upgrade: yes
@@ -27,5 +32,5 @@
 
 - name: Remove dependencies that are no longer required.
   ansible.builtin.apt:
-    autoremove: yes
+    autoremove: true
   become: true
