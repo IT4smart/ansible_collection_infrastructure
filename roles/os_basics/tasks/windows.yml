@@ -92,7 +92,7 @@
     name: "{{ item.connection_name }}"
     feature: 'IPv6'
     enabled: false
-  loop: "{{ ansibel_facts.interfaces }}"
+  loop: "{{ ansible_facts.interfaces }}"
 
 - name: Enable NLA
   ansible.windows.win_regedit:
