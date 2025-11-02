@@ -89,9 +89,9 @@
 
 - name: Disable IPv6 for a specific network adapter
   community.windows.win_net_adapter_feature:
-    name: "{{ item.connection_name }}"
-    feature: 'IPv6'
-    enabled: false
+    interface: "{{ item.connection_name }}"
+    component_id: ms_tcpip6
+    state: disabled
   loop: "{{ ansible_facts.interfaces }}"
 
 - name: Enable NLA
