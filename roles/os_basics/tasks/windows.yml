@@ -86,3 +86,17 @@
   chocolatey.chocolatey.win_chocolatey:
     name: vmware-tools
   when: ansible_facts.virtualization_type | lower == 'vmware'
+
+- name: Disable IPv6 for a specific network adapter
+  community.windows.win_net_adapter_feature:
+    name: "{{ item.connection_name }}"
+    feature: 'IPv6'
+    enabled: false
+  loop: "{{ ansibel_facts.interfaces }}"
+
+- name: Enable NLA
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp
+    name: UserAuthentication
+    data: 1
+    type: dword
