@@ -100,3 +100,7 @@
     name: UserAuthentication
     data: 1
     type: dword
+
+- name: Change power plan to high performance
+  community.windows.win_power_plan:
+    name: high performance
