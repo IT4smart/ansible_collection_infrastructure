@@ -104,3 +104,19 @@
 - name: Change power plan to high performance
   community.windows.win_power_plan:
     name: high performance
+
+- name: "Install Microsoft .NET Framework 4.8."
+  ansible.windows.win_package:
+    path: "{{ ndp_install_url }}"
+    product_id: "{16735AF7-1D8D-3681-94A5-C578A61EC832}"
+    arguments: '/qn'
+  register: dotnet48_installer
+  when: dotnet48_enabled
+
+- name: Reboot, only if required
+  ansible.windows.win_reboot:
+    reboot_timeout: 3600
+  when: 
+    - dotnet48_installer is defined
+    - dotnet48_installer.reboot_required is defined
+    - dotnet48_installer.reboot_required
