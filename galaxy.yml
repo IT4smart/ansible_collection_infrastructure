@@ -1,6 +1,6 @@
 namespace: "it4smart"
 name: "infrastructure"
-version: "0.2.0"
+version: "0.2.1"
 readme: README.md
 authors:
   - hack3d (github.com/hack3d)
