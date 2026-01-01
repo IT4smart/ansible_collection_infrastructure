@@ -12,7 +12,7 @@ windows_remote_desktop_firewall:
     remoteip: any
     state: present
 
-linux_default_users:
+os_basics_linux_default_users:
   - packer
 
 dotnet48_enabled: false

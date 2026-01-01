@@ -27,4 +27,15 @@
     state: absent
     remove: true
   become: true
-  loop: "{{ linux_default_users }}"
+  loop: "{{ os_basics_linux_default_users }}"
+
+- name: Allow default user sudo without password
+  community.general.sudoers:
+    name: "{{ os_basics_linux_default_user }}"
+    user: "{{ os_basics_linux_default_user }}"
+    state: present
+    nopassword: true
+    commands:
+      - ALL
+  become: true
+  when: os_basics_linux_default_user is defined
