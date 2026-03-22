@@ -8,6 +8,7 @@
     log_path: "C:\\Windows\\Temp\\WindowsUpdates_search_{{ now(utc=false, fmt='%Y-%m-%d_%H-%M-%S') }}.log"
   register: _result_wu_search
 
-- name: Show updates cound
+- name: Show updates count
   ansible.builtin.debug:
-    msg: "Found: {{ _result_wu_search.found_update_count }} / Installed: {{ _result_wu_search.installed_update_count }} / Failed: {{ _result_wu_search.failed_update_count }}"
+    #msg: "Found: {{ _result_wu_search.found_update_count }} / Installed: {{ _result_wu_search.installed_update_count }} / Failed: {{ _result_wu_search.failed_update_count }}"
+    var: _result_wu_search
