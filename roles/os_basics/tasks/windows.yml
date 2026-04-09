@@ -103,7 +103,7 @@
 
 - name: Change power plan to high performance
   community.windows.win_power_plan:
-    name: high performance
+    guid: "{{ os_basics_windows_power_plan_guid }}"
 
 - name: "Install Microsoft .NET Framework 4.8."
   ansible.windows.win_package:
