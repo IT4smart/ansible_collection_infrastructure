@@ -4,6 +4,7 @@
       - CriticalUpdates
       - SecurityUpdates
       - UpdateRollups
+      - Updates
     state: searched
     log_path: "C:\\Windows\\Temp\\WindowsUpdates_search_{{ now(utc=false, fmt='%Y-%m-%d_%H-%M-%S') }}.log"
   register: _result_wu_search
