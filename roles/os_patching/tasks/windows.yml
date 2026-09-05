@@ -23,12 +23,18 @@
   ansible.builtin.include_tasks:
     file: search_windows_updates.yml
 
+- name: Reboot before install Updates {{ inventory_hostname }}
+  ansible.windows.win_reboot:
+    reboot_timeout: 3600
+  when:
+    - _result_wu_search.reboot_required
+
 - name: Install Updates
   ansible.windows.win_updates:
   register: win_reboot_required
 
 - name: Reboot {{ inventory_hostname }}
-  win_reboot:
+  ansible.windows.win_reboot:
     reboot_timeout: 3600
   when:
     - win_reboot_required.reboot_required
