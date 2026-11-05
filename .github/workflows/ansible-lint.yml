@@ -21,7 +21,6 @@ jobs:
       fail-fast: false
       matrix:
         python:
-          - '3.9'
           - '3.10'
           - '3.11'
     steps:
@@ -37,7 +36,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f .devcontainer/files/requirements.txt ]; then pip install -r .devcontainer/files/requirements.txt; fi
+          pip install -r .devcontainer/files/requirements-dev.txt
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       - name: Install it4smart infrastructure collection

@@ -19,4 +19,5 @@ build_ignore:
 dependencies:
   community.general: ">=10.0.1"
   chocolatey.chocolatey: ">=1.5.0"
+  ansible.windows: ">=2.0.0"
   community.windows: ">=2.0.0"

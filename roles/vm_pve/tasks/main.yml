@@ -7,8 +7,7 @@
     api_host: "{{ pve_host }}"
     api_user: "{{ pve_api_user }}"
     api_password: "{{ pve_api_password }}"
-    boot: "{{ 
-     | default(omit) }}"
+    boot: "{{ vm_pve_boot | default(omit) }}"
     name: "{{ vm_pve_vm_name }}"
     cores: "{{ vm_pve_cores }}"
     sockets: "{{ vm_pve_sockets }}"

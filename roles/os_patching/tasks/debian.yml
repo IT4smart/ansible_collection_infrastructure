@@ -6,12 +6,12 @@
 
 - name: Remove useless packages from the cache
   ansible.builtin.apt:
-    autoclean: yes
+    autoclean: true
   become: true
 
 - name: Install updates
   ansible.builtin.apt:
-    upgrade: yes
+    upgrade: true
   become: true
 
 - name: Check for reboot

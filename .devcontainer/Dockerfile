@@ -6,7 +6,7 @@ ARG USER_GID=${USER_UID}
 
 LABEL maintainer "Raphael Lekies <raphael.lekies@it4smart.com> (IT4smart GmbH)"
 
-COPY files/requirements.txt /tmp/requirements.txt
+COPY files/requirements.txt files/requirements-dev.txt /tmp/
 
 RUN apt-get update -qq \
     && apt-get install -y --no-install-recommends \
@@ -21,7 +21,7 @@ RUN apt-get update -qq \
     && groupadd --gid ${USER_GID} ${USERNAME} \
     && useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} -s /bin/bash \
     && pip install --upgrade pip setuptools \
-    && pip install -r /tmp/requirements.txt
+    && pip install -r /tmp/requirements-dev.txt
 
 USER ${USERNAME}
 
