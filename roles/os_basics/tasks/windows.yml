@@ -38,14 +38,14 @@
 - name: Windows Server RDP
   block:
     - name: features | Managing Remote Desktop Feature
-      win_feature:
+      ansible.windows.win_feature:
         name: Remote-Desktop-Services
         state: present
       register: _windows_remote_desktop_services_enabled
       when: windows_remote_desktop_enabled
 
     - name: features | Managing Remote Desktop Feature
-      win_feature:
+      ansible.windows.win_feature:
         name: Remote-Desktop-Services
         state: absent
       register: _windows_remote_desktop_services_not_enabled
@@ -54,21 +54,21 @@
     - name: firewall | Managing Remote Desktop Firewall Settings
       community.windows.win_firewall_rule:
         action: "{{ item['action'] }}"
-        description: "{{ item['description']|default(omit) }}"
+        description: "{{ item['description'] | default(omit) }}"
         direction: "{{ item['direction'] }}"
-        enable: "{{ item['enable']|default(omit) }}"
-        force: "{{ item['force']|default(omit) }}"
-        localip: "{{ item['localip']|default(omit) }}"
+        enable: "{{ item['enable'] | default(omit) }}"
+        force: "{{ item['force'] | default(omit) }}"
+        localip: "{{ item['localip'] | default(omit) }}"
         localport: "{{ item['localport'] }}"
         name: "{{ item['name'] }}"
-        profiles: "{{ item['profile']|default(omit) }}"
+        profiles: "{{ item['profile'] | default(omit) }}"
         protocol: "{{ item['protocol'] }}"
-        remoteip: "{{ item['remoteip']|default(omit) }}"
+        remoteip: "{{ item['remoteip'] | default(omit) }}"
         state: "{{ item['state'] }}"
       with_items: "{{ windows_remote_desktop_firewall }}"
 
     - name: reboot | Rebooting Server
-      win_reboot:
+      ansible.windows.win_reboot:
         reboot_timeout_sec: 3600
         shutdown_timeout_sec: 3600
       when: >
@@ -78,7 +78,7 @@
             (_windows_remote_desktop_services_not_enabled is defined and
               _windows_remote_desktop_services_not_enabled['restart_needed'] is defined and
             _windows_remote_desktop_services_not_enabled['restart_needed'])
-  when: 
+  when:
     - ansible_facts.os_product_type is defined
     - ansible_facts.os_product_type == 'server'
 
@@ -116,7 +116,7 @@
 - name: Reboot, only if required
   ansible.windows.win_reboot:
     reboot_timeout: 3600
-  when: 
+  when:
     - dotnet48_installer is defined
     - dotnet48_installer.reboot_required is defined
     - dotnet48_installer.reboot_required

@@ -18,6 +18,3 @@ platforms:
   - name: 9999-wsv001
     ssh_user: packer
     ssh_password: VMw@re123!
-
-
-    
