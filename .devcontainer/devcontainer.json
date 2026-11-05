@@ -1,21 +1,23 @@
 {
     "name": "IT4smart Ansible Collection Infrastructure",
-    "dockerComposeFile": [
-        "docker-compose.yml"
-    ],
-    "service": "vscode",
-    "runServices": [
-        "vscode"
-    ],
-    "shutdownAction": "stopCompose",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "."
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     "workspaceFolder": "/workspace",
+    "mounts": [
+        "source=${localEnv:HOME}/.ssh,target=/mnt/ssh,type=bind,readonly"
+    ],
+    "shutdownAction": "stopContainer",
     "postStartCommand": "~/post-start.sh",
     "customizations": {
         "vscode": {
             "extensions": [
                 "redhat.ansible",
                 "dhoeric.ansible-vault",
-                "github.vscode-github-actions"
+                "github.vscode-github-actions",
+                "anthropic.claude-code"
             ]
         }
     },
