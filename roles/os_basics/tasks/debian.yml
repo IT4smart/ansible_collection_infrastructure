@@ -39,3 +39,15 @@
       - ALL
   become: true
   when: os_basics_linux_default_user is defined
+
+# sshd übernimmt den ersten gefundenen Wert, daher ein Präfix vor 50-cloud-init.conf
+- name: Configure sshd keepalive
+  ansible.builtin.template:
+    src: sshd_keepalive_conf.j2
+    dest: /etc/ssh/sshd_config.d/10-keepalive.conf
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  notify: Reload sshd
+  when: os_basics_linux_sshd_keepalive_enabled | bool

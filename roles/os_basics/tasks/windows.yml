@@ -78,7 +78,7 @@
             (_windows_remote_desktop_services_not_enabled is defined and
               _windows_remote_desktop_services_not_enabled['restart_needed'] is defined and
             _windows_remote_desktop_services_not_enabled['restart_needed'])
-  when: 
+  when:
     - ansible_facts.os_product_type is defined
     - ansible_facts.os_product_type == 'server'
 
@@ -116,7 +116,7 @@
 - name: Reboot, only if required
   ansible.windows.win_reboot:
     reboot_timeout: 3600
-  when: 
+  when:
     - dotnet48_installer is defined
     - dotnet48_installer.reboot_required is defined
     - dotnet48_installer.reboot_required
