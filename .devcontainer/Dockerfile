@@ -1,4 +1,4 @@
-FROM python:3.9.18-slim-bookworm
+FROM python:3.11.18-slim-bookworm
 
 ARG USERNAME=vscode
 ARG USER_UID=1000
