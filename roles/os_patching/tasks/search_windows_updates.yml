@@ -2,6 +2,7 @@
   ansible.windows.win_updates:
     category_names: '*'
     state: searched
+    skip_optional: true
     log_path: "C:\\Windows\\Temp\\WindowsUpdates_search_{{ now(utc=false, fmt='%Y-%m-%d_%H-%M-%S') }}.log"
   register: _result_wu_search
 

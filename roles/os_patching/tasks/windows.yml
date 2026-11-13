@@ -33,6 +33,7 @@
   ansible.windows.win_updates:
     category_names: '*'
     state: installed
+    skip_optional: true
     log_path: "C:\\Windows\\Temp\\WindowsUpdates_search_{{ now(utc=false, fmt='%Y-%m-%d_%H-%M-%S') }}.log"
   register: win_reboot_required
 
