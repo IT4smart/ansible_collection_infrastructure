@@ -1,39 +1,42 @@
-- name: Disable Windows automatic updates
+- name: windows | Disable Windows automatic updates
   ansible.windows.win_regedit:
     path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
     name: NoAutoUpdate
     data: 1
     type: dword
 
-- name: Disable Windows Updates notfications
+- name: windows | Disable Windows Updates notifications
   ansible.windows.win_regedit:
     path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
     name: AUOptions
     data: 1
     type: dword
 
-- name: Disable Windows Updates once-per-week scheduled installation
+- name: windows | Disable Windows Updates once-per-week scheduled installation
   ansible.windows.win_regedit:
     path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
     name: ScheduledInstallEveryWeek
     data: 0
     type: dword
 
-- name: Search windows updates
+- name: windows | Search for windows updates
   ansible.builtin.include_tasks:
     file: search_windows_updates.yml
 
-- name: Reboot before install Updates {{ inventory_hostname }}
+- name: windows | Reboot before install Updates {{ inventory_hostname }}
   ansible.windows.win_reboot:
     reboot_timeout: 3600
   when:
     - _result_wu_search.reboot_required
 
-- name: Install Updates
+- name: windows | Install Updates
   ansible.windows.win_updates:
+    category_names: '*'
+    state: installed
+    log_path: "C:\\Windows\\Temp\\WindowsUpdates_search_{{ now(utc=false, fmt='%Y-%m-%d_%H-%M-%S') }}.log"
   register: win_reboot_required
 
-- name: Reboot {{ inventory_hostname }}
+- name: windows | Reboot {{ inventory_hostname }}
   ansible.windows.win_reboot:
     reboot_timeout: 3600
   when:
