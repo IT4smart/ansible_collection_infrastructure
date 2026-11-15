@@ -105,18 +105,7 @@
   community.windows.win_power_plan:
     guid: "{{ os_basics_windows_power_plan_guid }}"
 
-- name: "Install Microsoft .NET Framework 4.8."
-  ansible.windows.win_package:
-    path: "{{ ndp_install_url }}"
-    product_id: "{16735AF7-1D8D-3681-94A5-C578A61EC832}"
-    arguments: '/qn'
-  register: dotnet48_installer
+- name: "windows | Install Microsoft .NET Framework 4.8"
+  ansible.builtin.include_tasks:
+    file: dotnet48.yml
   when: dotnet48_enabled
-
-- name: Reboot, only if required
-  ansible.windows.win_reboot:
-    reboot_timeout: 3600
-  when:
-    - dotnet48_installer is defined
-    - dotnet48_installer.reboot_required is defined
-    - dotnet48_installer.reboot_required

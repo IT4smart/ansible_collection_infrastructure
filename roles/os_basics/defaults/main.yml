@@ -15,8 +15,11 @@ windows_remote_desktop_firewall:
 os_basics_linux_default_users:
   - packer
 
-dotnet48_enabled: false
+dotnet48_enabled: false   # noqa: var-naming[no-role-prefix]  # Enable/Disable .NET Framework 4.8 installation
 ndp_install_url: https://download.visualstudio.microsoft.com/download/pr/2d6bb6b2-226a-4baa-bdec-798822606ff1/8494001c276a4b96804cde7829c04d7f/ndp48-x86-x64-allos-enu.exe
+ndp_install_dest: C:\Windows\Temp\ndp48-x86-x64-allos-enu.exe   # noqa: var-naming[no-role-prefix]
+ndp_install_checksum: 68c9986a8dcc0214d909aa1f31bee9fb5461bb839edca996a75b08ddffc1483f  # noqa: var-naming[no-role-prefix]
+os_basics_dotnet48_release: 528040  # Mindest-Release-Wert für .NET 4.8
 os_basics_windows_power_plan_guid: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
 
 # Server-seitige SSH-Keepalives, damit ruhende Sitzungen nicht von Firewalls/NAT-Geräten
