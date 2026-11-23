@@ -22,13 +22,31 @@
         path: "{{ ndp_install_dest }}"
         arguments: /q /norestart
         expected_return_code: [0, 1641, 3010]
-        creates_path: C:\Windows\Microsoft.NET\Framework64\v4.0.30319\clr.dll  # nur Platzhalter, Steuerung erfolgt über den when-Block
+        # Kein creates_path: clr.dll liegt bei allen .NET-4.x-Versionen im selben
+        # Verzeichnis (v4.0.30319). Die Idempotenz steuert der when-Block über den Release-Wert.
       register: dotnet48_installer
 
     - name: dotnet48 | Reboot after .NET Framework 4.8 installation
       ansible.windows.win_reboot:
         reboot_timeout: 3600
       when: dotnet48_installer.reboot_required | default(false)
+
+    - name: dotnet48 | Re-read installed .NET Framework 4.x release
+      ansible.windows.win_reg_stat:
+        path: HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full
+        name: Release
+      register: _os_basics_dotnet_release_after
+
+    - name: dotnet48 | Verify .NET Framework 4.8 is installed
+      ansible.builtin.assert:
+        that:
+          - _os_basics_dotnet_release_after.exists
+          - (_os_basics_dotnet_release_after.value | int) >= (os_basics_dotnet48_release | int)
+        fail_msg: >-
+          .NET Framework 4.8 ist nach der Installation nicht vorhanden
+          (Release={{ _os_basics_dotnet_release_after.value | default('n/a') }},
+          erwartet >= {{ os_basics_dotnet48_release }}, Installer-RC={{ dotnet48_installer.rc | default('n/a') }}).
+        quiet: true
   always:
     - name: dotnet48 | Remove .NET Framework 4.8 installer
       ansible.windows.win_file:
