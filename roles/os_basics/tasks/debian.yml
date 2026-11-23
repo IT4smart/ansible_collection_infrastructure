@@ -6,7 +6,7 @@
   register: _result_ipv6
 
 - name: Apply sysctl changes
-  ansible.builtin.command: sysctl -p
+  ansible.builtin.command: sysctl -p /etc/sysctl.d/10-ipv6.conf
   become: true
   when: _result_ipv6.changed
 
